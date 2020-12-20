@@ -112,7 +112,7 @@
               color="white"
               class="rounded-lg meow-select"
               dark
-              :rules="[v => !!v || '必填']"
+              :rules="[v => !!v || '*必填']"
               required
             ></v-select>
           </v-col>
@@ -132,7 +132,7 @@
               color="white"
               class="rounded-lg meow-select"
               dark
-              :rules="[v => v !==null || '必填']"
+              :rules="[v => v !==null || '*必填']"
               required
             ></v-select>
           </v-col>
@@ -150,7 +150,7 @@
               color="white"
               class="rounded-lg meow-select"
               dark
-              :rules="[v => !!v || '必填']"
+              :rules="[v => !!v || '*必填']"
               required
             ></v-select>
           </v-col>
@@ -178,6 +178,15 @@
 </template>
 
 <style>
+  .v-card__title {
+    color: #736A61;
+  }
+
+  .v-container {
+    background-color: #968C83;
+  }
+
+
   .meow-select.v-input.error--text,
   .meow-select .error--text,
   .meow-select .v-label.error--text,
@@ -303,12 +312,3 @@
     }
   }
 </script>
-<style>
-  .v-card__title {
-    color: #736A61;
-  }
-
-  .v-container {
-    background-color: #968C83;
-  }
-</style>
