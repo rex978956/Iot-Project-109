@@ -2,6 +2,7 @@
   <v-container
     class="pa-md-8"
     fluid
+    style="background-color: #968C83"
   >
     <v-img
       src="../assets/tkulogo.png"
@@ -17,7 +18,7 @@
       max-width="30"
     >
       <div class="text-h5 ml-10 white--text">
-        教室異常顯示
+        教室異常顯示 {{ w }}
       </div>
     </v-sheet>
 
@@ -35,7 +36,8 @@
             class="pa-2 rounded-lg"
             outlined
             tile
-            color=#F5EFE9
+            color="#F5EFE9"
+            min-height="300"
           >
             <v-card-title
               class="headline mb-0 font-weight-black"
@@ -43,37 +45,29 @@
             >
               <slot name="title">{{item.name}}</slot>
             </v-card-title>
-            <div class="mx-6 mb-6">
-              <v-row
-                no-gutters
-                v-for="room in item.room"
-                :key="room"
-                class="d-flex align-center"
+
+            <div
+              v-for="room in item.room"
+              :key="room"
+              class="row d-flex align-center ml-5"
+            >
+              <p class="font-weight-bold mb-0">
+                {{ room }}
+              </p>
+              <v-chip
+                v-for="meow in ['CO2', 'H2O', 'meow', '7777']"
+                :key="meow"
+                label
+                class="ml-3 pa-1"
+                x-small
+                color="#8A7F75"
+                text-color="white"
               >
-                <p class="font-weight-bold mb-0">
-                  {{ room }}
+                <p class="body-2 ma-0 pa-0">
+                  {{ 'CO2' }}
                 </p>
-                <v-chip
-                  v-for="meow in ['CO2', 'H2O', 'meow', '7777']"
-                  :key="meow"
-                  label
-                  class="ml-3 pa-1"
-                  x-small
-                  color="#8A7F75"
-                  text-color="white"
-                >
-                  <p class="body-2 ma-0 pa-0">
-                    {{ 'CO2' }}
-                  </p>
-                </v-chip>
-              </v-row>
+              </v-chip>
             </div>
-            <!-- <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <slot name="footer"></slot>
-            </v-card-actions>
-            One of three columns -->
           </v-card>
         </v-col>
       </v-row>
@@ -165,7 +159,7 @@
               class="mt-2"
               color="white"
               :disabled="!valid"
-              @click="$refs.form.validate()"
+              @click="submit()"
             >
               <v-icon x-large>mdi-chevron-right</v-icon>
             </v-btn>
@@ -182,11 +176,6 @@
     color: #736A61;
   }
 
-  .v-container {
-    background-color: #968C83;
-  }
-
-
   .meow-select.v-input.error--text,
   .meow-select .error--text,
   .meow-select .v-label.error--text,
@@ -201,6 +190,7 @@
   export default {
     name: 'Home',
     data: () => ({
+      w: 0,
       valid: false,
       building_selected: null,
       roomlevel: null,
@@ -307,6 +297,13 @@
       roomlevel(val, old) {
         if (old !== null) {
           this.room_selected = null
+        }
+      },
+    },
+    methods: {
+      submit() {
+        if (this.$refs.form.validate()) {
+          this.$router.push('/room/' + 'E306')
         }
       }
     }
