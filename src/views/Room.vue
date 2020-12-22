@@ -1,10 +1,11 @@
 <template>
-  <v-container
-    fluid
-    style="background-color: #968C83;height: 100vh"
+  <v-responsive
+    style="background-color: #968C83"
     class="ma-0 pa-0"
+    min-height="100vh"
   >
     <v-row
+      v-resize="onResize"
       no-gutters
       class="hidden-sm-and-down"
     >
@@ -12,10 +13,12 @@
         cols="6"
         lg="5"
       >
-        <v-container
-          fluid
-          style="background-color: #D6D2C4; height: 100vh"
-          class="pl-lg-12 pr-lg-10 py-5"
+        <v-responsive
+          style="background-color: #D6D2C4;"
+          class="pl-lg-12 pr-lg-10 py-5 pl-6 pr-5"
+          min-height="100vh"
+          height="100%"
+          elevation="1"
         >
           <v-row
             align="center"
@@ -69,30 +72,62 @@
                 室內有害氣體已經超標，請⽴即開窗!
               </v-alert>
             </v-row>
-
-
           </v-card>
-        </v-container>
+        </v-responsive>
       </v-col>
       <v-col
         cols="6"
         lg="7"
       >
-        <v-container
-          fluid
-          style="background-color: #968C83; height: 100vh"
+        <v-responsive
+          style="background-color: #968C83;"
           class="pl-4 pr-8 py-4"
-        ></v-container>
+          min-height="100vh"
+        >
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+          <v-card class="py-12">
+            {{ '456' }}
+          </v-card>
+        </v-responsive>
       </v-col>
     </v-row>
 
 
     <!-- mobile style -->
-    <v-container class="hidden-md-and-up">
+    <v-responsive class="hidden-md-and-up">
       {{ 'mobile' }}
-    </v-container>
+    </v-responsive>
 
-  </v-container>
+  </v-responsive>
 </template>
 
 <style>
@@ -109,10 +144,10 @@
     font-size: 32px;
   }
 
-  .v-alert--outlined {
+  /* .v-alert--outlined {
     background: transparent !important;
     border: thin solid currentColor !important;
-  }
+  } */
 
   .v-alert--outlined-1 {
     background: #F7DAD9 !important;
