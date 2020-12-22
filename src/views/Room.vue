@@ -12,21 +12,20 @@
         <v-container
           fluid
           style="background-color: #D6D2C4; height: 100vh"
-          class="pl-12 pr-10 py-8"
+          class="pl-12 pr-10 py-5"
         >
           <v-row
             align="center"
-            class="mb-8"
+            class="mb-5"
           >
             <v-btn
               icon
-              class="mt-2"
               color="#FFF5EB"
               @click="submit()"
-              width="80"
-              height="80"
+              width="56"
+              height="56"
             >
-              <v-icon size="100">mdi-chevron-left</v-icon>
+              <v-icon size="80">mdi-chevron-left</v-icon>
             </v-btn>
           </v-row>
           <v-card
