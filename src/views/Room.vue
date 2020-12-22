@@ -8,11 +8,14 @@
       no-gutters
       class="hidden-sm-and-down"
     >
-      <v-col md="5">
+      <v-col
+        cols="6"
+        lg="5"
+      >
         <v-container
           fluid
           style="background-color: #D6D2C4; height: 100vh"
-          class="pl-12 pr-10 py-5"
+          class="pl-lg-12 pr-lg-10 py-5"
         >
           <v-row
             align="center"
@@ -29,23 +32,52 @@
             </v-btn>
           </v-row>
           <v-card
-            class="rounded-lg"
-            outlined
-            tile
+            class="rounded-lg pa-5"
+            flat
             color="#F5EFE9"
             min-height="60vh"
           >
-            <v-card-title
-              class="headline mb-0 font-weight-black"
-              color="#736A61"
-            >
-              {{'123123123'}}
-            </v-card-title>
+            <v-row justify="center">
+              <v-alert
+                color="#968C83"
+                class="rounded-lg"
+                icon="mdi-alert-outline"
+                outlined
+                width="500px"
+              >
+                室內有害氣體已經超標，請⽴即開窗!
+              </v-alert>
+              <v-alert
+                color="#968C83"
+                class="rounded-lg"
+                icon="mdi-alert-outline"
+                outlined
+                width="500px"
+              >
+                室內有害氣體已經超標，請⽴即開窗!
+              </v-alert>
+
+              <!-- if warning then use  v-alert--outlined-1 -->
+              <v-alert
+                color="#968C83"
+                class="rounded-lg"
+                :class="warning ? 'v-alert--outlined-1' : 'v-alert--outlined'"
+                icon="mdi-alert-outline"
+                outlined
+                width="500px"
+              >
+                室內有害氣體已經超標，請⽴即開窗!
+              </v-alert>
+            </v-row>
+
 
           </v-card>
         </v-container>
       </v-col>
-      <v-col md="7">
+      <v-col
+        cols="6"
+        lg="7"
+      >
         <v-container
           fluid
           style="background-color: #968C83; height: 100vh"
@@ -64,10 +96,6 @@
 </template>
 
 <style>
-  .v-card__title {
-    color: #736A61;
-  }
-
   .meow-select.v-input.error--text,
   .meow-select .error--text,
   .meow-select .v-label.error--text,
@@ -76,13 +104,28 @@
     color: #ffffff !important;
     caret-color: #ffffff !important;
   }
+
+  .v-alert__icon.v-icon {
+    font-size: 32px;
+  }
+
+  .v-alert--outlined {
+    background: transparent !important;
+    border: thin solid currentColor !important;
+  }
+
+  .v-alert--outlined-1 {
+    background: #F7DAD9 !important;
+    border: thin solid currentColor !important;
+  }
 </style>
 
 <script>
   export default {
     name: 'Home',
     data: () => ({
-      roomList: ["E306", "E201", "O011"]
+      roomList: ["E306", "E201", "O011"],
+      warning: true
     }),
     methods: {
       checkRoomID() {

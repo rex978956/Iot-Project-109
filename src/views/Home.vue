@@ -34,8 +34,7 @@
         >
           <v-card
             class="pa-2 rounded-lg"
-            outlined
-            tile
+            flat
             color="#F5EFE9"
             min-height="300"
           >
