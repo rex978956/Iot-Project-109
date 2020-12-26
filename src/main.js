@@ -3,12 +3,17 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
-
+import axios from 'axios'
+import Chart from 'vue2-frappe'
 Vue.config.productionTip = false
+
+Vue.use(Chart)
 
 new Vue({
   router,
   store,
   vuetify,
+  axios,
+  Chart,
   render: h => h(App)
 }).$mount('#app')

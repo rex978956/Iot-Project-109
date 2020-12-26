@@ -1,11 +1,11 @@
 <template>
   <v-app>
 
-    <frontend-nav-bar />
+    <!--    <frontend-nav-bar />-->
 
     <frontend-view />
 
-    <frontend-footer />
+    <!-- <frontend-footer /> -->
 
   </v-app>
 </template>
@@ -14,8 +14,8 @@
   export default {
     name: 'LayoutsFrontend',
     components: {
-      FrontendNavBar: () => import('./Navbar'),
-      FrontendFooter: () => import('./Footer'),
+      // FrontendNavBar: () => import('./Navbar'),
+      // FrontendFooter: () => import('./Footer'),
       FrontendView: () => import('./View'),
     },
 

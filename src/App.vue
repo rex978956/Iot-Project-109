@@ -1,7 +1,6 @@
 <template>
   <frontend-layouts />
 </template>
-
 <script>
   export default {
     name: 'App',
