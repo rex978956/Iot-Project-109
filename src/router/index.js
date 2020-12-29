@@ -25,6 +25,11 @@ const routes = [
     component: () => import('../views/Room.vue'),
   },
   {
+    path: '/meow/:id',
+    name: 'Meow',
+    component: () => import('../views/Meow.vue'),
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('../views/404.vue'),
