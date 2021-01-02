@@ -131,11 +131,11 @@
       <v-responsive
         style="background-color: #968C83;"
         min-height="100vh"
-        class="mx-lg-10 mx-0 my-5"
+        class="mx-lg-7 mx-md-5 mx-sm-9 my-sm-5 mx-3 mt-5 mb-0"
       >
         <v-row
-          :dense="windowSize.x <= 1400"
           align="center"
+          justify="space-between"
         >
           <v-col
             cols="12"
@@ -148,16 +148,18 @@
           <v-col
             v-for="(item, index) in current_data"
             :key="`current_data-${index}`"
-            cols="12"
-            :md=" windowSize.x < 1060 ? 2 : 4"
+            :cols="windowSize.x < 350 ? 12 : 6"
             lg="2"
+            :md=" windowSize.x < 1060 ? 2 : 4"
+            sm="4"
+            :class="[windowSize.x < 600 ? 'py-1 px-1' : 'py-3 px-2']"
           >
             <v-card
               color="#FFF5EB"
-              class="py-3"
+              class="py-sm-3 py-0"
             >
               <v-card-title
-                class="text-caption pb-2"
+                class="text-caption pb-sm-2pb-0"
                 style="color: #968C83"
               >{{item.name}}</v-card-title>
               <v-row
@@ -186,7 +188,7 @@
 
         <v-row
           align="center"
-          class="ma-7 ml-8 mr-2"
+          class="mx-sm-0"
         >
           <v-col
             cols="12"
@@ -195,24 +197,24 @@
             :key="`lineCharData-${index}`"
           >
             <v-card class="pt-4">
-<!--              <vue-frappe-->
-<!--                :id="`charDataList-id-${index}`"-->
-<!--                :labels="item.labels"-->
-<!--                :title="item.title"-->
-<!--                type="line"-->
-<!--                :height="150"-->
-<!--                :colors="item.colors"-->
-<!--                :dataSets="item.data"-->
-<!--                :class="[windowSize.x > 1060 ? size1 : size2, size2]"-->
+              <!--              <vue-frappe-->
+              <!--                :id="`charDataList-id-${index}`"-->
+              <!--                :labels="item.labels"-->
+              <!--                :title="item.title"-->
+              <!--                type="line"-->
+              <!--                :height="150"-->
+              <!--                :colors="item.colors"-->
+              <!--                :dataSets="item.data"-->
+              <!--                :class="[windowSize.x > 1060 ? size1 : size2, size2]"-->
 
-<!--              >-->
-<!--              </vue-frappe>-->
+              <!--              >-->
+              <!--              </vue-frappe>-->
               <line-chart
-                  :id="`lineCharData-id-${index}`"
-                  :chartData="item"
-                  :options="item.options"
-                  :height="150"
-                  :class="[windowSize.x > 1060 ? size1 : size2, size2]"
+                :id="`lineCharData-id-${index}`"
+                :chartData="item"
+                :options="item.options"
+                :height="150"
+                :class="[windowSize.x > 1060 ? size1 : size2, size2]"
               ></line-chart>
             </v-card>
           </v-col>
@@ -264,14 +266,15 @@ border: thin solid currentColor !important;
   .size2 {
     max-width: 100px;
   }
-
 </style>
 
 <script>
   import LineChart from '../components/Chart.vue'
   export default {
     name: 'Home',
-    components: { LineChart },
+    components: {
+      LineChart
+    },
     data: () => ({
       // loaded: false,  <= usage : api data check
       data_Temperature: [{
@@ -327,36 +330,32 @@ border: thin solid currentColor !important;
         },
       ],
       lineChartData: [{
-        labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-        datasets: [
-          {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [{
             label: 'Temperature (°C)',
             backgroundColor: "transparent",
             data: [15, 20, -3, -15, 58],
             borderColor: "#D6D2C4",
             pointBackgroundColor: "#D6D2C4",
-            pointBorderColor:"#D6D2C4",
-            pointBorderWidth:3,
+            pointBorderColor: "#D6D2C4",
+            pointBorderWidth: 3,
+          }],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
           }
-        ],
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-        }
         },
         {
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-          datasets: [
-            {
-              label: 'Temperature (°C)',
-              backgroundColor: "transparent",
-              data: [15, 20, -3, -15, 58],
-              borderColor: "#D6D2C4",
-              pointBackgroundColor: "#D6D2C4",
-              pointBorderColor:"#D6D2C4",
-              pointBorderWidth:3
-            }
-          ],
+          datasets: [{
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#D6D2C4",
+            pointBorderColor: "#D6D2C4",
+            pointBorderWidth: 3
+          }],
           options: {
             responsive: true,
             maintainAspectRatio: false
@@ -364,17 +363,15 @@ border: thin solid currentColor !important;
         },
         {
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-          datasets: [
-            {
-              label: 'Temperature (°C)',
-              backgroundColor: "transparent",
-              data: [15, 20, -3, -15, 58],
-              borderColor: "#D6D2C4",
-              pointBackgroundColor: "#968C83",
-              pointBorderColor:"#968C83",
-              pointBorderWidth:3
-            }
-          ],
+          datasets: [{
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#968C83",
+            pointBorderColor: "#968C83",
+            pointBorderWidth: 3
+          }],
           options: {
             responsive: true,
             maintainAspectRatio: false
@@ -382,17 +379,15 @@ border: thin solid currentColor !important;
         },
         {
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-          datasets: [
-            {
-              label: 'Temperature (°C)',
-              backgroundColor: "transparent",
-              data: [15, 20, -3, -15, 58],
-              borderColor: "#D6D2C4",
-              pointBackgroundColor: "#968C83",
-              pointBorderColor:"#968C83",
-              pointBorderWidth:3
-            }
-          ],
+          datasets: [{
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#968C83",
+            pointBorderColor: "#968C83",
+            pointBorderWidth: 3
+          }],
           options: {
             responsive: true,
             maintainAspectRatio: false
@@ -400,17 +395,15 @@ border: thin solid currentColor !important;
         },
         {
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-          datasets: [
-            {
-              label: 'Temperature (°C)',
-              backgroundColor: "transparent",
-              data: [15, 20, -3, -15, 58],
-              borderColor: "#D6D2C4",
-              pointBackgroundColor: "#968C83",
-              pointBorderColor:"#968C83",
-              pointBorderWidth:3
-            }
-          ],
+          datasets: [{
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#968C83",
+            pointBorderColor: "#968C83",
+            pointBorderWidth: 3
+          }],
           options: {
             responsive: true,
             maintainAspectRatio: false
@@ -418,17 +411,15 @@ border: thin solid currentColor !important;
         },
         {
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-          datasets: [
-            {
-              label: 'Temperature (°C)',
-              backgroundColor: "transparent",
-              data: [15, 20, -3, -15, 58],
-              borderColor: "#D6D2C4",
-              pointBackgroundColor: "#968C83",
-              pointBorderColor:"#968C83",
-              pointBorderWidth:3
-            }
-          ],
+          datasets: [{
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#968C83",
+            pointBorderColor: "#968C83",
+            pointBorderWidth: 3
+          }],
           options: {
             responsive: true,
             maintainAspectRatio: false
@@ -436,17 +427,15 @@ border: thin solid currentColor !important;
         },
         {
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-          datasets: [
-            {
-              label: 'Temperature (°C)',
-              backgroundColor: "transparent",
-              data: [15, 20, -3, -15, 58],
-              borderColor: "#D6D2C4",
-              pointBackgroundColor: "#968C83",
-              pointBorderColor:"#968C83",
-              pointBorderWidth:3
-            }
-          ],
+          datasets: [{
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#968C83",
+            pointBorderColor: "#968C83",
+            pointBorderWidth: 3
+          }],
           options: {
             responsive: true,
             maintainAspectRatio: false
@@ -454,17 +443,15 @@ border: thin solid currentColor !important;
         },
         {
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-          datasets: [
-            {
-              label: 'Temperature (°C)',
-              backgroundColor: "transparent",
-              data: [15, 20, -3, -15, 58],
-              borderColor: "#D6D2C4",
-              pointBackgroundColor: "#968C83",
-              pointBorderColor:"#968C83",
-              pointBorderWidth:3
-            }
-          ],
+          datasets: [{
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#968C83",
+            pointBorderColor: "#968C83",
+            pointBorderWidth: 3
+          }],
           options: {
             responsive: true,
             maintainAspectRatio: false
@@ -472,17 +459,15 @@ border: thin solid currentColor !important;
         },
         {
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-          datasets: [
-            {
-              label: 'Temperature (°C)',
-              backgroundColor: "transparent",
-              data: [15, 20, -3, -15, 58],
-              borderColor: "#D6D2C4",
-              pointBackgroundColor: "#968C83",
-              pointBorderColor:"#968C83",
-              pointBorderWidth:3
-            }
-          ],
+          datasets: [{
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#968C83",
+            pointBorderColor: "#968C83",
+            pointBorderWidth: 3
+          }],
           options: {
             responsive: true,
             maintainAspectRatio: false
@@ -490,17 +475,15 @@ border: thin solid currentColor !important;
         },
         {
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
-          datasets: [
-            {
-              label: 'Temperature (°C)',
-              backgroundColor: "transparent",
-              data: [15, 20, -3, -15, 58],
-              borderColor: "#D6D2C4",
-              pointBackgroundColor: "#968C83",
-              pointBorderColor:"#968C83",
-              pointBorderWidth:3
-            }
-          ],
+          datasets: [{
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#968C83",
+            pointBorderColor: "#968C83",
+            pointBorderWidth: 3
+          }],
           options: {
             responsive: true,
             maintainAspectRatio: false
