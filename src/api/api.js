@@ -15,3 +15,5 @@ export const apiRoomAirQualityValue = (room_id, obj_name) =>
 
 export const apiRoomAirQualityChart = (room_id, obj_name) =>
   Request.get(`/room/${room_id}/${obj_name}/range`)
+
+export const apiRoomAlter = (room_id) => Request.get(`/room/${room_id}/alert`)
