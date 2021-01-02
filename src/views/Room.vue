@@ -7,11 +7,11 @@
   >
     <v-navigation-drawer
       app
-      :hide-overlay="windowSize.x >= 1060 || !show"
       :width="drawer_width"
       mobile-breakpoint="1060"
-      :permanent="windowSize.x >= 1060 || show"
-      :temporary="show"
+      :permanent="large"
+      :temporary="show && !large"
+      v-model="show"
     >
       <v-fab-transition>
         <v-btn
@@ -101,7 +101,7 @@
                     :color="state.open ? '#80C68B' : '#E36666'"
                   >mdi-air-conditioner</v-icon>
                 </template>
-                <span>{{ state.name }}</span>
+                <span>{{ state.deviceName }}</span>
               </v-tooltip>
             </v-col>
           </v-row>
@@ -253,7 +253,8 @@ border: thin solid currentColor !important;
   import {
     apiRoomAirQualityValue,
     apiRoomAirQualityChart,
-    apiRoomAlter
+    apiRoomAlter,
+    apiRoomConTrolDevice
   } from '../api/api.js'
   export default {
     name: 'Home',
@@ -278,23 +279,7 @@ border: thin solid currentColor !important;
       }],
       roomList: ["E306", "E201", "O011", "E203"],
       warning: true,
-      aircond_state: [{
-          name: 'aircond-1',
-          open: true,
-        },
-        {
-          name: 'aircond-1',
-          open: false,
-        },
-        {
-          name: 'aircond-1',
-          open: true,
-        },
-        {
-          name: 'aircond-1',
-          open: false,
-        }
-      ],
+      aircond_state: [],
       current_data: [],
       lineChartData: [],
       alter_list: [],
@@ -304,6 +289,7 @@ border: thin solid currentColor !important;
       },
       drawer_width: 0,
       show: false,
+      large: true,
     }),
     methods: {
       async getData() {
@@ -357,6 +343,15 @@ border: thin solid currentColor !important;
         }).catch((err) => {
           console.log(err)
         })
+        await apiRoomConTrolDevice(this.$route.params.id).then((res) => {
+          if (res.status === 200 && res.data.ok) {
+            this.aircond_state = res.data.data
+          } else {
+            console.log('error')
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
       },
       checkRoomID() {
         if (this.roomList.indexOf(this.$route.params.id) < 0) {
@@ -371,12 +366,16 @@ border: thin solid currentColor !important;
         if (this.windowSize.x >= 1060) {
           this.drawer_width = Math.ceil(this.windowSize.x * 0.4)
           this.show = false
+          this.large = true
         } else if (this.windowSize.x > 800) {
           this.drawer_width = Math.ceil(this.windowSize.x * 0.6)
+          this.large = false
         } else if (this.windowSize.x > 600) {
           this.drawer_width = Math.ceil(this.windowSize.x * 0.7)
+          this.large = false
         } else {
           this.drawer_width = Math.ceil(this.windowSize.x * 0.8)
+          this.large = false
         }
       },
     },
