@@ -7,7 +7,7 @@
   >
     <v-navigation-drawer
       app
-      hide-overlay
+      :hide-overlay="windowSize.x >= 1060 || !show"
       :width="drawer_width"
       mobile-breakpoint="1060"
       :permanent="windowSize.x >= 1060 || show"
@@ -52,43 +52,31 @@
           </v-btn>
         </v-row>
         <v-card
-          class="rounded-lg py-5 px-7"
+          class="rounded-lg py-5 px-2 px-sm-7"
           flat
           color="#F5EFE9"
           min-height="60vh"
         >
-          <v-row justify="center">
-            <v-alert
-              color="#968C83"
-              class="rounded-lg"
-              icon="mdi-alert-outline"
-              outlined
-              width="500px"
-            >
-              室內有害氣體已經超標，請⽴即開窗!
-            </v-alert>
-            <v-alert
-              color="#968C83"
-              class="rounded-lg"
-              icon="mdi-alert-outline"
-              outlined
-              width="500px"
-            >
-              室內有害氣體已經超標，請⽴即開窗!
-            </v-alert>
 
-            <!-- if warning then use  v-alert--outlined-1 -->
-            <v-alert
-              color="#968C83"
-              class="rounded-lg"
-              :class="warning ? 'v-alert--outlined-1' : 'v-alert--outlined'"
-              icon="mdi-alert-outline"
-              outlined
-              width="500px"
-            >
-              室內有害氣體已經超標，請⽴即開窗!
-            </v-alert>
-          </v-row>
+          <v-virtual-scroll
+            :items="alter_list"
+            max-height="60vh"
+            :item-height="drawer_width < 230 ? 120 : drawer_width < 330 ? 100 : 80"
+            bench="10"
+          >
+            <template v-slot:default="{ item }">
+              <v-alert
+                :key="item"
+                color="#968C83"
+                class="rounded-lg"
+                :class="item.alert ? 'v-alert--outlined-1' : 'v-alert--outlined'"
+                :icon="item.alert ? 'mdi-alert-outline' : 'mdi-checkbox-marked-circle '"
+                outlined
+              >
+                {{ item.msg }}
+              </v-alert>
+            </template>
+          </v-virtual-scroll>
         </v-card>
         <v-card
           class="rounded-lg mt-9"
@@ -96,25 +84,33 @@
           color="#FFF5EB"
         >
           <v-row justify="center">
-            <!--              <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">-->
             <v-col
               cols="3"
-              v-for="(state, index) in states"
-              :key="`state-${index}`"
+              v-for="(state, index) in aircond_state"
+              :key="`aircond_state-${index}`"
               align="center"
               justify="center"
             >
-              <v-icon
-                size="40"
-                class="mx-md-5"
-              >mdi-air-conditioner</v-icon>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    v-bind="attrs"
+                    v-on="on"
+                    size="40"
+                    class="mx-md-5"
+                    :color="state.open ? '#80C68B' : '#E36666'"
+                  >mdi-air-conditioner</v-icon>
+                </template>
+                <span>{{ state.name }}</span>
+              </v-tooltip>
             </v-col>
           </v-row>
         </v-card>
       </v-responsive>
     </v-navigation-drawer>
 
-    <v-responsive min-height="100vh">
+    <v-responsive min-height="
+                100vh">
       <v-fab-transition>
         <v-btn
           class="ma-2"
@@ -181,7 +177,7 @@
               >
                 <v-col
                   class="text-h5 font-weight-medium pa-0"
-                  :style="{color:item.abnormal?'#8FB69B':'#D19999'}"
+                  :style="{color:item.abnormal?'#D19999':'#8FB69B'}"
                   cols="6"
                 >
                   {{ item._value }}
@@ -256,7 +252,8 @@ border: thin solid currentColor !important;
   import LineChart from '../components/Chart.vue'
   import {
     apiRoomAirQualityValue,
-    apiRoomAirQualityChart
+    apiRoomAirQualityChart,
+    apiRoomAlter
   } from '../api/api.js'
   export default {
     name: 'Home',
@@ -281,9 +278,26 @@ border: thin solid currentColor !important;
       }],
       roomList: ["E306", "E201", "O011", "E203"],
       warning: true,
-      states: 4,
+      aircond_state: [{
+          name: 'aircond-1',
+          open: true,
+        },
+        {
+          name: 'aircond-1',
+          open: false,
+        },
+        {
+          name: 'aircond-1',
+          open: true,
+        },
+        {
+          name: 'aircond-1',
+          open: false,
+        }
+      ],
       current_data: [],
       lineChartData: [],
+      alter_list: [],
       windowSize: {
         x: 0,
         y: 0,
@@ -328,6 +342,15 @@ border: thin solid currentColor !important;
 
             console.log(this.lineChartData)
 
+          } else {
+            console.log('error')
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+        await apiRoomAlter(this.$route.params.id).then((res) => {
+          if (res.status === 200 && res.data.ok) {
+            this.alter_list = res.data.data
           } else {
             console.log('error')
           }

@@ -35,7 +35,7 @@
             class="pa-2 rounded-lg"
             flat
             color="#F5EFE9"
-            min-height="300"
+            min-height="150"
           >
             <v-card-title
               class="headline mb-0 font-weight-black"
@@ -53,7 +53,7 @@
                 {{ room.RoomID }}
               </p>
               <v-chip
-                v-for="(tag, index) in Object.keys(room.isAbnormal).slice(0, 4)"
+                v-for="(tag, index) in room.Abnormal.slice(0, 3)"
                 :key="`tag-${room.RoomID}-${index}`"
                 label
                 class="ml-3 pa-1"
@@ -66,7 +66,7 @@
                 </p>
               </v-chip>
               <v-chip
-                v-show=" Object.keys(room.isAbnormal).length > 2"
+                v-show=" room.Abnormal.length > 2"
                 label
                 class="ml-3 pa-1"
                 x-small
@@ -94,7 +94,7 @@
         搜尋指定教室
       </div>
     </v-sheet>
-    {{ building_selected }}
+
     <v-container>
       <v-form
         ref="form"
@@ -140,16 +140,16 @@
               required
             ></v-select>
           </v-col>
-          <!-- <v-col
+          <v-col
             cols="5"
             md="2"
             sm="2"
             xs="3"
           >
             <v-select
-              :items="building_selected ? building_selected.rooms.filter(x => x.roomID[1] == roomlevel) : []"
+              :items="building_selected ? building_selected.rooms.filter(x => x.RoomNumber[0] == roomlevel) : []"
               v-model="room_selected"
-              item-text="roomID"
+              item-text="RoomID"
               label="教室"
               outlined
               color="white"
@@ -158,7 +158,7 @@
               :rules="[v => !!v || '*必填']"
               required
             ></v-select>
-          </v-col> -->
+          </v-col>
           <v-col
             cols="2"
             md="2"
