@@ -18,10 +18,9 @@
       max-width="30"
     >
       <div class="text-h5 ml-10 white--text">
-        教室異常顯示 {{ w }}
+        教室異常顯示
       </div>
     </v-sheet>
-
     <v-container fluid>
       <v-row align="center">
         <v-col
@@ -42,20 +41,20 @@
               class="headline mb-0 font-weight-black"
               color="#736A61"
             >
-              <slot name="title">{{item.name}}</slot>
+              <slot name="title">{{item.buildingName}}</slot>
             </v-card-title>
 
             <div
-              v-for="room in item.room"
-              :key="room"
+              v-for="room in item.rooms"
+              :key="room.RoomID"
               class="row d-flex align-center ml-5"
             >
               <p class="font-weight-bold mb-0">
-                {{ room }}
+                {{ room.RoomID }}
               </p>
               <v-chip
-                v-for="meow in ['CO2', 'H2O', 'meow', '7777']"
-                :key="meow"
+                v-for="(tag, index) in Object.keys(room.isAbnormal)"
+                :key="`tag-${room.RoomID}-${index}`"
                 label
                 class="ml-3 pa-1"
                 x-small
@@ -63,7 +62,7 @@
                 text-color="white"
               >
                 <p class="body-2 ma-0 pa-0">
-                  {{ 'CO2' }}
+                  {{ tag }}
                 </p>
               </v-chip>
             </div>
@@ -83,7 +82,7 @@
         搜尋指定教室
       </div>
     </v-sheet>
-
+    {{ building_selected }}
     <v-container>
       <v-form
         ref="form"
@@ -99,7 +98,7 @@
               :items="buildings"
               label="大樓"
               v-model="building_selected"
-              item-text="name"
+              item-text="buildingName"
               return-object
               outlined
               color="white"
@@ -129,15 +128,16 @@
               required
             ></v-select>
           </v-col>
-          <v-col
+          <!-- <v-col
             cols="5"
             md="2"
             sm="2"
             xs="3"
           >
             <v-select
-              :items="building_selected ? building_selected.room.filter(x => x[1] == roomlevel) : []"
+              :items="building_selected ? building_selected.rooms.filter(x => x.roomID[1] == roomlevel) : []"
               v-model="room_selected"
+              item-text="roomID"
               label="教室"
               outlined
               color="white"
@@ -146,7 +146,7 @@
               :rules="[v => !!v || '*必填']"
               required
             ></v-select>
-          </v-col>
+          </v-col> -->
           <v-col
             cols="2"
             md="2"
@@ -186,6 +186,9 @@
 </style>
 
 <script>
+  import {
+    apiBuilding
+  } from '../api/api.js'
   export default {
     name: 'Home',
     data: () => ({
@@ -194,98 +197,7 @@
       building_selected: null,
       roomlevel: null,
       room_selected: null,
-      buildings: [{
-          name: '工學大樓',
-          buildingID: '1',
-          levelStart: 2,
-          levelEnd: 4,
-          room: [
-            'E201',
-            'E213',
-            'E215',
-            'E302',
-            'E303',
-            'E401',
-            'E411'
-          ]
-        },
-        {
-          name: '商管大樓',
-          buildingID: '2',
-          levelStart: 0,
-          levelEnd: 7,
-          room: [
-            'E201',
-            'E213',
-            'E215',
-            'E302',
-            'E303',
-            'E401',
-            'E411'
-          ]
-        },
-        {
-          name: '外語大樓',
-          buildingID: '3',
-          levelStart: 2,
-          levelEnd: 4,
-          room: [
-            'E201',
-            'E213',
-            'E215',
-            'E302',
-            'E303',
-            'E401',
-            'E411'
-          ]
-        },
-        {
-          name: '化學館',
-          buildingID: '4',
-          levelStart: 0,
-          levelEnd: 5,
-          room: [
-            'C012',
-            'C201',
-            'C213',
-            'C215',
-            'C302',
-            'C303',
-            'C401',
-            'C411'
-          ]
-        },
-        {
-          name: '科學館',
-          buildingID: '5',
-          levelStart: 1,
-          levelEnd: 3,
-          room: [
-            'E201',
-            'E213',
-            'E215',
-            'E302',
-            'E303',
-            'E401',
-            'E411'
-          ]
-        },
-        {
-          name: '傳播館',
-          buildingID: '6',
-          levelStart: 2,
-          levelEnd: 4,
-          room: [
-            'E201',
-            'E213',
-            'E215',
-            'E302',
-            'E303',
-            'E401',
-            'E411'
-          ]
-        },
-      ]
+      buildings: []
     }),
     watch: {
       building_selected(val, old) {
@@ -302,9 +214,27 @@
     methods: {
       submit() {
         if (this.$refs.form.validate()) {
-          this.$router.push('/room/' + 'E306')
+          this.$router.push('/room/' + 'E203')
         }
+      },
+      async getData() {
+        await apiBuilding().then((res) => {
+          if (res.status === 200 && res.data.ok) {
+            this.buildings = res.data.data
+            this.buildings.forEach((item) => {
+              item['levelStart'] = 0
+              item['levelEnd'] = 5
+            })
+          } else {
+            console.log('error')
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
       }
+    },
+    mounted() {
+      this.getData()
     }
   }
 </script>

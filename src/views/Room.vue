@@ -46,6 +46,7 @@
             @click="submit()"
             width="56"
             height="56"
+            href="/"
           >
             <v-icon size="80">mdi-chevron-left</v-icon>
           </v-btn>
@@ -100,6 +101,8 @@
               cols="3"
               v-for="(state, index) in states"
               :key="`state-${index}`"
+              align="center"
+              justify="center"
             >
               <v-icon
                 size="40"
@@ -141,9 +144,17 @@
             cols="12"
             align="end"
           >
-            <h1 class="display-2">
-              {{ windowSize }}
-            </h1>
+            <v-card
+              color="#FFF5EB"
+              class="py-sm-3 py-0"
+            >
+              <v-card-title
+                class="display-1"
+                style="color: #968C83"
+              >
+                <v-spacer></v-spacer>{{buildingName + ' ' + room }}<v-spacer></v-spacer>
+              </v-card-title>
+            </v-card>
           </v-col>
           <v-col
             v-for="(item, index) in current_data"
@@ -161,7 +172,7 @@
               <v-card-title
                 class="text-caption pb-sm-2pb-0"
                 style="color: #968C83"
-              >{{item.name}}</v-card-title>
+              >{{item._field}}</v-card-title>
               <v-row
                 class="px-4 pb-1"
                 no-gutters
@@ -173,7 +184,7 @@
                   :style="{color:item.abnormal?'#8FB69B':'#D19999'}"
                   cols="6"
                 >
-                  {{ item.value }}
+                  {{ item._value }}
                 </v-col>
                 <v-col
                   class="text-caption"
@@ -197,36 +208,17 @@
             :key="`lineCharData-${index}`"
           >
             <v-card class="pt-4">
-              <!--              <vue-frappe-->
-              <!--                :id="`charDataList-id-${index}`"-->
-              <!--                :labels="item.labels"-->
-              <!--                :title="item.title"-->
-              <!--                type="line"-->
-              <!--                :height="150"-->
-              <!--                :colors="item.colors"-->
-              <!--                :dataSets="item.data"-->
-              <!--                :class="[windowSize.x > 1060 ? size1 : size2, size2]"-->
-
-              <!--              >-->
-              <!--              </vue-frappe>-->
               <line-chart
                 :id="`lineCharData-id-${index}`"
                 :chartData="item"
                 :options="item.options"
                 :height="150"
-                :class="[windowSize.x > 1060 ? size1 : size2, size2]"
               ></line-chart>
             </v-card>
           </v-col>
         </v-row>
       </v-responsive>
     </v-responsive>
-
-
-    <!-- mobile style -->
-    <!-- <v-responsive class="hidden-md-and-up">
-      {{ 'mobile' }}
-    </v-responsive> -->
 
   </v-responsive>
 </template>
@@ -258,18 +250,14 @@ border: thin solid currentColor !important;
   .v-btn--fab.v-size--small.v-btn--absolute.v-btn--top {
     top: 0px;
   }
-
-  .size1 {
-    max-width: 350px;
-  }
-
-  .size2 {
-    max-width: 100px;
-  }
 </style>
 
 <script>
   import LineChart from '../components/Chart.vue'
+  import {
+    apiRoomAirQualityValue,
+    apiRoomAirQualityChart
+  } from '../api/api.js'
   export default {
     name: 'Home',
     components: {
@@ -277,6 +265,8 @@ border: thin solid currentColor !important;
     },
     data: () => ({
       // loaded: false,  <= usage : api data check
+      room: '',
+      buildingName: '',
       data_Temperature: [{
         name: "Yet Another",
         chartType: 'line',
@@ -289,46 +279,10 @@ border: thin solid currentColor !important;
           dotSize: 18
         },
       }],
-      roomList: ["E306", "E201", "O011"],
+      roomList: ["E306", "E201", "O011", "E203"],
       warning: true,
       states: 4,
-      current_data: [{
-          name: 'Temperature',
-          unit: '℃',
-          value: 27,
-          abnormal: false
-        },
-        {
-          name: 'Humidity',
-          unit: '%',
-          value: 86,
-          abnormal: false
-        },
-        {
-          name: 'CO2',
-          unit: 'ɥg/m3',
-          value: 12,
-          abnormal: false
-        },
-        {
-          name: 'PM 2.5',
-          unit: 'ppm',
-          value: 12,
-          abnormal: true
-        },
-        {
-          name: 'TVOC',
-          unit: 'ppb',
-          value: 12,
-          abnormal: false
-        },
-        {
-          name: 'HCHO',
-          unit: 'ɥg/m3',
-          value: 12,
-          abnormal: false
-        },
-      ],
+      current_data: [],
       lineChartData: [{
           labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
           datasets: [{
@@ -657,12 +611,32 @@ border: thin solid currentColor !important;
       },
       drawer_width: 0,
       show: false,
-
-
     }),
     methods: {
+      async getData() {
+        await apiRoomAirQualityValue(this.$route.params.id, 'AirQuality').then((res) => {
+          if (res.status === 200 && res.data.ok) {
+            this.current_data = res.data.data
+            this.room = res.data.data[0].RoomID
+            this.buildingName = res.data.data[0].buildingName
+          } else {
+            console.log('error')
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+        await apiRoomAirQualityChart(this.$route.params.id, 'AirQuality').then((res) => {
+          if (res.status === 200 && res.data.ok) {
+            // this.current_data = res.data.data
+            console.log('meow')
+          } else {
+            console.log('error')
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
       checkRoomID() {
-        console.log(this.roomList.indexOf(this.$route.params.id))
         if (this.roomList.indexOf(this.$route.params.id) < 0) {
           this.$router.push('/404')
         }
@@ -688,6 +662,7 @@ border: thin solid currentColor !important;
       this.checkRoomID()
     },
     mounted() {
+      this.getData()
       this.onResize()
     }
   }
