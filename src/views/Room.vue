@@ -5,7 +5,6 @@
     min-height="100vh"
     v-resize="onResize"
   >
-
     <v-navigation-drawer
       app
       hide-overlay
@@ -192,21 +191,29 @@
           <v-col
             cols="12"
             md="6"
-            v-for="(item, index) in charDataList"
-            :key="`charDataList-${index}`"
+            v-for="(item, index) in lineChartData"
+            :key="`lineCharData-${index}`"
           >
             <v-card class="pt-4">
-              <vue-frappe
-                :id="`charDataList-id-${index}`"
-                :labels="item.labels"
-                :title="item.title"
-                type="line"
-                :height="150"
-                :colors="item.colors"
-                :dataSets="item.data"
-                :class="[windowSize.x > 1060 ? size1 : size2, size2]"
-              >
-              </vue-frappe>
+<!--              <vue-frappe-->
+<!--                :id="`charDataList-id-${index}`"-->
+<!--                :labels="item.labels"-->
+<!--                :title="item.title"-->
+<!--                type="line"-->
+<!--                :height="150"-->
+<!--                :colors="item.colors"-->
+<!--                :dataSets="item.data"-->
+<!--                :class="[windowSize.x > 1060 ? size1 : size2, size2]"-->
+
+<!--              >-->
+<!--              </vue-frappe>-->
+              <line-chart
+                  :id="`lineCharData-id-${index}`"
+                  :chartData="item"
+                  :options="item.options"
+                  :height="150"
+                  :class="[windowSize.x > 1060 ? size1 : size2, size2]"
+              ></line-chart>
             </v-card>
           </v-col>
         </v-row>
@@ -258,15 +265,15 @@ border: thin solid currentColor !important;
     max-width: 100px;
   }
 
-  /* .frappe-chart.chart {
-    max-width: 100px;
-  } */
 </style>
 
 <script>
+  import LineChart from '../components/Chart.vue'
   export default {
     name: 'Home',
+    components: { LineChart },
     data: () => ({
+      // loaded: false,  <= usage : api data check
       data_Temperature: [{
         name: "Yet Another",
         chartType: 'line',
@@ -317,6 +324,187 @@ border: thin solid currentColor !important;
           unit: 'ɥg/m3',
           value: 12,
           abnormal: false
+        },
+      ],
+      lineChartData: [{
+        labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+        datasets: [
+          {
+            label: 'Temperature (°C)',
+            backgroundColor: "transparent",
+            data: [15, 20, -3, -15, 58],
+            borderColor: "#D6D2C4",
+            pointBackgroundColor: "#D6D2C4",
+            pointBorderColor:"#D6D2C4",
+            pointBorderWidth:3,
+          }
+        ],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+        },
+        {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              backgroundColor: "transparent",
+              data: [15, 20, -3, -15, 58],
+              borderColor: "#D6D2C4",
+              pointBackgroundColor: "#D6D2C4",
+              pointBorderColor:"#D6D2C4",
+              pointBorderWidth:3
+            }
+          ],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        },
+        {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              backgroundColor: "transparent",
+              data: [15, 20, -3, -15, 58],
+              borderColor: "#D6D2C4",
+              pointBackgroundColor: "#968C83",
+              pointBorderColor:"#968C83",
+              pointBorderWidth:3
+            }
+          ],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        },
+        {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              backgroundColor: "transparent",
+              data: [15, 20, -3, -15, 58],
+              borderColor: "#D6D2C4",
+              pointBackgroundColor: "#968C83",
+              pointBorderColor:"#968C83",
+              pointBorderWidth:3
+            }
+          ],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        },
+        {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              backgroundColor: "transparent",
+              data: [15, 20, -3, -15, 58],
+              borderColor: "#D6D2C4",
+              pointBackgroundColor: "#968C83",
+              pointBorderColor:"#968C83",
+              pointBorderWidth:3
+            }
+          ],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        },
+        {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              backgroundColor: "transparent",
+              data: [15, 20, -3, -15, 58],
+              borderColor: "#D6D2C4",
+              pointBackgroundColor: "#968C83",
+              pointBorderColor:"#968C83",
+              pointBorderWidth:3
+            }
+          ],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        },
+        {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              backgroundColor: "transparent",
+              data: [15, 20, -3, -15, 58],
+              borderColor: "#D6D2C4",
+              pointBackgroundColor: "#968C83",
+              pointBorderColor:"#968C83",
+              pointBorderWidth:3
+            }
+          ],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        },
+        {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              backgroundColor: "transparent",
+              data: [15, 20, -3, -15, 58],
+              borderColor: "#D6D2C4",
+              pointBackgroundColor: "#968C83",
+              pointBorderColor:"#968C83",
+              pointBorderWidth:3
+            }
+          ],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        },
+        {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              backgroundColor: "transparent",
+              data: [15, 20, -3, -15, 58],
+              borderColor: "#D6D2C4",
+              pointBackgroundColor: "#968C83",
+              pointBorderColor:"#968C83",
+              pointBorderWidth:3
+            }
+          ],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        },
+        {
+          labels: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              backgroundColor: "transparent",
+              data: [15, 20, -3, -15, 58],
+              borderColor: "#D6D2C4",
+              pointBackgroundColor: "#968C83",
+              pointBorderColor:"#968C83",
+              pointBorderWidth:3
+            }
+          ],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
         },
       ],
       charDataList: [{
@@ -407,13 +595,13 @@ border: thin solid currentColor !important;
           name: "Temperature (°C)",
           chartType: 'line',
           values: [15, 20, -3, -15, 58],
-          // axisOptions: {
-          //   xAxisMode: "tick",
-          //   xIsSeries: true,
-          // },
-          // lineOptions: {
-          //   dotSize: 18
-          // },
+          axisOptions: {
+            xAxisMode: "tick",
+            xIsSeries: true,
+          },
+          lineOptions: {
+            dotSize: 18
+          },
         }]
       }, {
         title: "Temperature (°C)",
