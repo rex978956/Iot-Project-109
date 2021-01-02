@@ -53,7 +53,7 @@
                 {{ room.RoomID }}
               </p>
               <v-chip
-                v-for="(tag, index) in Object.keys(room.isAbnormal)"
+                v-for="(tag, index) in Object.keys(room.isAbnormal).slice(0, 4)"
                 :key="`tag-${room.RoomID}-${index}`"
                 label
                 class="ml-3 pa-1"
@@ -63,6 +63,18 @@
               >
                 <p class="body-2 ma-0 pa-0">
                   {{ tag }}
+                </p>
+              </v-chip>
+              <v-chip
+                v-show=" Object.keys(room.isAbnormal).length > 2"
+                label
+                class="ml-3 pa-1"
+                x-small
+                color="#8A7F75"
+                text-color="white"
+              >
+                <p class="body-2 ma-0 pa-0">
+                  {{ '...' }}
                 </p>
               </v-chip>
             </div>
